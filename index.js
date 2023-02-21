@@ -159,9 +159,9 @@ app.patch("/updatePw", async (req,res)=>{
 
 //전체상품등록요청 
 app.post('/AWWite',async (req,res)=>{
-    const {w_name,w_bigcategory,w_category,w_img,w_price} = req.body;
-    conn.query(`insert into aw (w_name,w_bigcategory,w_category,w_img,w_price) values(?,?,?,?,?)`,
-        [w_name,w_bigcategory,w_category,w_img,w_price],
+    const {w_name,w_bigcategory,w_category,w_img,w_price,w_capacity,w_amount,w_fat,w_sugars,w_caffeine,w_desc} = req.body;
+    conn.query(`insert into aw (w_name,w_bigcategory,w_category,w_img,w_price,w_capacity,w_amount,w_fat,w_sugars,w_caffeine,w_desc) values(?,?,?,?,?,?,?,?,?,?,?)`,
+        [w_name,w_bigcategory,w_category,w_img,w_price,w_capacity,w_amount,w_fat,w_sugars,w_caffeine,w_desc],
         (err,result,fileds)=>{
             if(result){
                 res.send("ok")
@@ -171,155 +171,25 @@ app.post('/AWWite',async (req,res)=>{
     })
 })
 
-//커피등록요청 
-app.post('/AW',async (req,res)=>{
-    const {cp_name,cp_category,cp_img,cp_price} = req.body;
-    conn.query(`insert into cp (cp_name,cp_category,cp_img,cp_price) values(?,?,?,?)`,
-        [cp_name,cp_category,cp_img,cp_price],
-        (err,result,fileds)=>{
-            if(result){
-                res.send("ok")
-            }else{
-                console.log(err);
-            }
-    })
-})
-//커피 데이터 불러오기
-app.get("/AW/coldbrew",async (req,res) => {
-    conn.query(`select * from cp where cp_category='콜드 브루' `,(err,result,fields)=>{
-        res.send(result)
-    })
-})
-app.get("/AW/brewdcoffee",async (req,res) => {
-    conn.query(`select * from cp where cp_category='브루드 커피' `,(err,result,fields)=>{
-        res.send(result)
-    })
-})
-app.get("/AW/esopress",async (req,res) => {
-    conn.query(`select * from cp where cp_category='에스프레소' `,(err,result,fields)=>{
-        res.send(result)
-    })
-})
-app.get("/AW/frapp",async (req,res) => {
-    conn.query(`select * from cp where cp_category='프라푸치노' `,(err,result,fields)=>{
-        res.send(result)
-    })
-})
-app.get("/AW/blend",async (req,res) => {
-    conn.query(`select * from cp where cp_category='블렌디드' `,(err,result,fields)=>{
-        res.send(result)
-    })
-})
-app.get("/AW/refres",async (req,res) => {
-    conn.query(`select * from cp where cp_category='AW 리프레셔' `,(err,result,fields)=>{
-        res.send(result)
-    })
-})
-app.get("/AW/fizzio",async (req,res) => {
-    conn.query(`select * from cp where cp_category='AW 피지오' `,(err,result,fields)=>{
-        res.send(result)
-    })
-})
-app.get("/AW/tea",async (req,res) => {
-    conn.query(`select * from cp where cp_category='티(티바나)' `,(err,result,fields)=>{
-        res.send(result)
+//데이터 리스트 불러오기
+app.get("/AW/:category",async (req,res) => {
+    const {category} = req.params;
+    console.log(req);
+    conn.query(`select * from aw where w_category='${category}' `,(err,result,fields)=>{
+        res.send(result);
+        console.log(err);
+        console.log(result);
     })
 })
 
-//음식 등록 요청 
-app.post('/food',async (req,res)=>{
-    const {f_name,f_category,f_img,f_price} = req.body;
-    conn.query(`insert into food (f_name,f_category,f_img,f_price) values(?,?,?,?)`,
-        [f_name,f_category,f_img,f_price],
-        (err,result,fileds)=>{
-            if(result){
-                res.send("ok")
-            }else{
-                console.log(err);
-            }
-    })
-})
-
-//음식 데이터 불러오기
-app.get("/AW/bread",async (req,res) => {
-    conn.query(`select * from food where f_category='브레드' `,(err,result,fields)=>{
-        res.send(result)
-    })
-})
-app.get("/AW/cake",async (req,res) => {
-    conn.query(`select * from food where f_category='케이크' `,(err,result,fields)=>{
-        res.send(result)
-    })
-})
-app.get("/AW/sandwich",async (req,res) => {
-    conn.query(`select * from food where f_category='샌드위치 & 샐러드' `,(err,result,fields)=>{
-        res.send(result)
-    })
-})
-app.get("/AW/food",async (req,res) => {
-    conn.query(`select * from food where f_category='따뜻한 푸드' `,(err,result,fields)=>{
-        res.send(result)
-    })
-})
-app.get("/AW/fruit",async (req,res) => {
-    conn.query(`select * from food where f_category='과일 & 요거트' `,(err,result,fields)=>{
-        res.send(result)
-    })
-})
-app.get("/AW/snack",async (req,res) => {
-    conn.query(`select * from food where f_category='스낵 & 미니 디저트' `,(err,result,fields)=>{
-        res.send(result)
-    })
-})
-app.get("/AW/icecream",async (req,res) => {
-    conn.query(`select * from food where f_category='아이스크림' `,(err,result,fields)=>{
-        res.send(result)
-    })
-})
-
-//상품 등록요청 
-app.post('/product',async (req,res)=>{
-    const {p_name,p_category,p_img,p_price} = req.body;
-    conn.query(`insert into product (p_name,p_category,p_img,p_price) values(?,?,?,?)`,
-        [p_name,p_category,p_img,p_price],
-        (err,result,fileds)=>{
-            if(result){
-                res.send("ok")
-            }else{
-                console.log(err);
-            }
-    })
-})
-
-//상품 데이터 불러오기
-app.get("/AW/mug",async (req,res) => {
-    conn.query(`select * from product where p_category='머그' `,(err,result,fields)=>{
-        res.send(result)
-    })
-})
-app.get("/AW/glass",async (req,res) => {
-    conn.query(`select * from product where p_category='글라스' `,(err,result,fields)=>{
-        res.send(result)
-    })
-})
-app.get("/AW/ptumbler",async (req,res) => {
-    conn.query(`select * from product where p_category='플라스틱 텀블러' `,(err,result,fields)=>{
-        res.send(result)
-    })
-})
-app.get("/AW/stumbler",async (req,res) => {
-    conn.query(`select * from product where p_category='스테인리스 텀블러' `,(err,result,fields)=>{
-        res.send(result)
-    })
-})
-app.get("/AW/accessory",async (req,res) => {
-    conn.query(`select * from product where p_category='악세서리' `,(err,result,fields)=>{
-        res.send(result)
-    })
-})
-app.get("/AW/coffegoods",async (req,res) => {
-    conn.query(`select * from product where p_category='커피 용품' `,(err,result,fields)=>{
-        res.send(result)
+//상세데이터 불러오기
+app.get("/AW_Product/:no",async (req,res) => {
+    const {no} = req.params;
+    console.log(req);
+    conn.query(`select * from aw where w_no='${no}' `,(err,result,fields)=>{
+        res.send(result);
+        console.log(err);
+        console.log(result);
     })
 })
 
