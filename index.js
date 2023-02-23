@@ -182,7 +182,7 @@ app.get("/AW/:category",async (req,res) => {
     })
 })
 
-//상세데이터 불러오기
+//상세데이터 불러오기 
 app.get("/AW_Product/:no",async (req,res) => {
     const {no} = req.params;
     console.log(req);
